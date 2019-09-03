@@ -2,6 +2,9 @@ package com.realsa
 
 import android.app.Application
 import android.content.Context
+import com.realsa.utils.RUtil.Companion.rString
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import java.util.*
 
 class RealApplication: Application() {
@@ -11,6 +14,7 @@ class RealApplication: Application() {
         instance = this
         val locale = Locale("es","ES")
         Locale.setDefault(locale)
+        setupRealmConfiguration()
     }
 
     companion object {
@@ -23,5 +27,17 @@ class RealApplication: Application() {
         fun getAppContext(): Context {
             return instance.applicationContext
         }
+    }
+
+    private fun setupRealmConfiguration() {
+        val key = ByteArray(64)
+        Realm.init(this)
+        val realmConfiguration = RealmConfiguration.Builder()
+            .name(rString(R.string.app_name))
+            .schemaVersion(0)
+            .encryptionKey(key)
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        Realm.setDefaultConfiguration(realmConfiguration)
     }
 }

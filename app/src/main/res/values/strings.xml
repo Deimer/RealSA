@@ -4,4 +4,6 @@
     <string name="title_activity_menu">MenuActivity</string>
 
     <string name="lbl_option_camera">Escanear Código</string>
+
+    <string name="lbl_option_histories">Mostrar Historial</string>
 </resources>

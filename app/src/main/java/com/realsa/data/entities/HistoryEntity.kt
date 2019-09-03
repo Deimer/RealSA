@@ -1,17 +1,14 @@
 package com.realsa.data.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
-@Entity(tableName = "histories")
-data class HistoryEntity(
-    @ColumnInfo(name = "created_at")
-    var createdAt: String,
-    var description: String,
-    var latitude: Float,
-    var longitude: Float
-){
-    @PrimaryKey(autoGenerate = true)
+open class HistoryEntity: RealmObject() {
+    @PrimaryKey
     var id: Int = 0
+
+    var createdAt: String? = null
+    var description: String? = null
+    var latitude: Float? = 0.toFloat()
+    var longitude: Float? = 0.toFloat()
 }

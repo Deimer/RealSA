@@ -5,6 +5,7 @@ buildscript {
     ext {
         lifecycle_version = '2.0.0'
         room_version = '2.2.0-beta01'
+        realm_version = '2.0.0'
         retrofit_version = '2.5.0'
         dagger_version = '2.19'
         rxjava_version = '2.2.4'
@@ -19,6 +20,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath "io.realm:realm-gradle-plugin:5.3.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
