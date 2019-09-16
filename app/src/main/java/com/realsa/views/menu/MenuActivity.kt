@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.realsa.data.models.HistoryModel
 import com.jakewharton.rxbinding2.view.RxView
 import com.patloew.rxlocation.RxLocation
+import com.realsa.views.login.LoginActivity
 import dmax.dialog.SpotsDialog
 import java.text.SimpleDateFormat
 import java.util.*
@@ -95,6 +96,9 @@ class MenuActivity : AppCompatActivity() {
         }
         RxView.clicks(fabHistories).subscribe {
             startActivity(Intent(this, HistoryActivity::class.java))
+        }
+        RxView.clicks(imgIcon).subscribe {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 

@@ -24,15 +24,17 @@ class HistoryAdapterRecycler(
         return ViewHolderHistory(LayoutInflater.from(context).inflate(R.layout.card_item_history, parent, false))
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "DefaultLocale")
     override fun onBindViewHolder(holder: ViewHolderHistory, position: Int) {
         val history = histories[position]
         holder.lblDescription.text = "${history.description}".toLowerCase().capitalize()
-        holder.lblLocation.text = "${history.latitude}, ${history.longitude}"
+        holder.lblLocation.text = "Coordenadas: ${history.latitude}, ${history.longitude}"
+        holder.lblDateTime.text = "Fecha: ${history.createdAt}"
     }
 }
 
 class ViewHolderHistory(view: View): RecyclerView.ViewHolder(view) {
     val lblDescription: TextView = view.lblDescription
     val lblLocation: TextView = view.lblCoordinates
+    val lblDateTime: TextView = view.lblDateTime
 }
