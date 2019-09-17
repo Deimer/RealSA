@@ -44,8 +44,16 @@ abstract class BaseActivity: AppCompatActivity() {
         showSnackBar(rString(resource))
     }
 
+    fun showMessageBar(message: String) {
+        showSnackBar(message)
+    }
+
     fun showMessageToast(resource: Int) {
         showToast(rString(resource))
+    }
+
+    fun showMessageToast(message: String) {
+        showToast(message)
     }
 
     private fun showSnackBar(message: String) {

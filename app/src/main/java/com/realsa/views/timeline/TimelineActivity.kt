@@ -1,4 +1,4 @@
-package com.realsa.views.menu
+package com.realsa.views.timeline
 
 import android.os.Bundle
 import android.view.View
@@ -11,29 +11,30 @@ import com.realsa.views.adapter.HistoryAdapterRecycler
 import com.realsa.views.base.BaseActivity
 import kotlinx.android.synthetic.main.content_history.*
 
-class HistoryActivity : BaseActivity() {
+class TimelineActivity : BaseActivity() {
 
-    private lateinit var historyViewModel: HistoryViewModel
+    private lateinit var timelineViewModel: TimelineViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
+        setContentView(R.layout.activity_timeline)
         setupView()
     }
 
     private fun setupView() {
         setupViewModel()
-        historyViewModel.getHistories()
+        timelineViewModel.get()
     }
 
     private fun setupViewModel() {
-        historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
-        historyViewModel.singleLiveEvent.observe(this, Observer {
+        timelineViewModel = ViewModelProviders.of(this).get(TimelineViewModel::class.java)
+        timelineViewModel.singleLiveEvent.observe(this, Observer {
             when(it) {
-                is HistoryViewModel.ViewEvent.ResponseHistories -> {
-                    if(it.histories.isNotEmpty()) {
-                        setupRecyclerClients(it.histories)
-                    }
+                is TimelineViewModel.ViewEvent.ResponseHistories -> {
+                    setupRecyclerClients(it.histories)
+                }
+                is TimelineViewModel.ViewEvent.ResponseError -> {
+                    showMessageBar(it.errorMessage)
                 }
             }
         })

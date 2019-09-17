@@ -9,6 +9,6 @@ open class HistoryEntity: RealmObject() {
 
     var createdAt: String? = null
     var description: String? = null
-    var latitude: Float? = 0.toFloat()
-    var longitude: Float? = 0.toFloat()
+    var latitude: String? = ""
+    var longitude: String? = ""
 }

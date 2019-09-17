@@ -4,7 +4,6 @@ import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.realsa.R
 import com.realsa.views.camera.CameraLectorActivity
 import kotlinx.android.synthetic.main.activity_menu.*
@@ -20,17 +19,20 @@ import com.github.tntkhang.gmailsenderlibrary.GMailSender
 import com.github.tntkhang.gmailsenderlibrary.GmailListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.realsa.data.models.HistoryModel
 import com.jakewharton.rxbinding2.view.RxView
 import com.patloew.rxlocation.RxLocation
+import com.realsa.views.base.BaseActivity
 import com.realsa.views.login.LoginActivity
+import com.realsa.views.timeline.TimelineActivity
 import dmax.dialog.SpotsDialog
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 @SuppressLint("CheckResult")
-class MenuActivity : AppCompatActivity() {
+class MenuActivity : BaseActivity() {
 
     private lateinit var historyViewModel: HistoryViewModel
 
@@ -43,11 +45,20 @@ class MenuActivity : AppCompatActivity() {
     private val requestPermissionCamera = 9
     private val responseCamera = 10
 
+    private var isLogged = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         setSupportActionBar(toolbar)
         setupView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(FirebaseAuth.getInstance().isSignInWithEmailLink("https://realsa.page.link/u9DC")) {
+            isLogged = true
+        }
     }
 
     private fun setupView() {
@@ -95,10 +106,18 @@ class MenuActivity : AppCompatActivity() {
             }
         }
         RxView.clicks(fabHistories).subscribe {
-            startActivity(Intent(this, HistoryActivity::class.java))
+            if(isLogged) {
+                startActivity(Intent(this, HistoryActivity::class.java))
+            } else {
+                startActivity(Intent(this, TimelineActivity::class.java))
+            }
         }
         RxView.clicks(imgIcon).subscribe {
-            startActivity(Intent(this, LoginActivity::class.java))
+            if(isLogged) {
+                showMessageToast("Ya estas logueado.")
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
         }
     }
 
@@ -143,8 +162,8 @@ class MenuActivity : AppCompatActivity() {
         val history = HistoryModel().apply {
             description = result
             createdAt = getDate()
-            latitude = mLatitude
-            longitude = mLongitude
+            latitude = mLatitude.toString()
+            longitude = mLongitude.toString()
         }
         sendEmail(result, getDate(), "$mLatitude, $mLongitude")
         historyViewModel.insertHistory(history)

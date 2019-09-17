@@ -1,10 +1,10 @@
 package com.realsa.views.login
 
+import android.content.Intent
 import com.realsa.R
 import android.os.Bundle
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
-import com.realsa.utils.RUtil.Companion.rString
 import com.realsa.views.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -37,9 +37,12 @@ class LoginActivity : BaseActivity() {
         firebaseAuth.sendSignInLinkToEmail(txtEmail.getValue(), actionCodeSetting)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    println("email send")
+                    showMessageToast("Logueado correctamente")
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivity")
+                    startActivity(intent)
                 } else {
-                    println("error: ${task.exception?.message}")
+                    showMessageToast("error: ${task.exception?.message}")
                 }
                 hideLoading()
             }
@@ -47,7 +50,7 @@ class LoginActivity : BaseActivity() {
 
     private fun createActionCodeSettings(): ActionCodeSettings {
         return ActionCodeSettings.newBuilder()
-            .setUrl("https://realsa.page.link/summer-sale")
+            .setUrl("https://realsa.page.link/u9DC")
             .setHandleCodeInApp(true)
             .setAndroidPackageName(
                 "com.realsa",

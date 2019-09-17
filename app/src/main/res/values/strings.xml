@@ -5,6 +5,8 @@
 
     <string name="lbl_option_camera">Escanear Código</string>
 
+    <string name="lbl_timeline">Timeline</string>
+
     <string name="lbl_option_histories">Mostrar Historial</string>
 
     <string name="title_login">Login</string>
