@@ -19,6 +19,28 @@ class HistoryInteractor {
         DaggerIHistoryComponent.builder().historyModule(HistoryModule()).build().inject(this)
     }
 
+    fun saveEmail(email: String): Observable<Boolean>? {
+        return historyRepository.saveEmail(email)
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.flatMap {
+                Observable.just(it)
+            }
+    }
+
+    fun getEmail(): Observable<String>? {
+        return historyRepository.getEmail("email")
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.flatMap {
+                Observable.just(it)
+            }
+    }
+
+    fun insertFirebase(historyModel: HistoryModel): Observable<Boolean> {
+        return historyRepository.insertFirebase(convertModelToEntity(historyModel))
+    }
+
     fun insert(historyModel: HistoryModel): Observable<Boolean> {
         return historyRepository.insert(convertModelToEntity(historyModel))
     }

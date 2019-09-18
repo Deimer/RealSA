@@ -12,21 +12,15 @@ import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import android.app.Activity
-import android.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.github.tntkhang.gmailsenderlibrary.GMailSender
-import com.github.tntkhang.gmailsenderlibrary.GmailListener
 import com.google.android.gms.location.LocationRequest
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.realsa.data.models.HistoryModel
 import com.jakewharton.rxbinding2.view.RxView
 import com.patloew.rxlocation.RxLocation
 import com.realsa.views.base.BaseActivity
 import com.realsa.views.login.LoginActivity
 import com.realsa.views.timeline.TimelineActivity
-import dmax.dialog.SpotsDialog
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -35,8 +29,6 @@ import java.util.concurrent.TimeUnit
 class MenuActivity : BaseActivity() {
 
     private lateinit var historyViewModel: HistoryViewModel
-
-    private lateinit var dialog: AlertDialog
 
     private lateinit var rxLocation: RxLocation
     private var mLatitude: Float = 0.toFloat()
@@ -54,13 +46,6 @@ class MenuActivity : BaseActivity() {
         setupView()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if(FirebaseAuth.getInstance().isSignInWithEmailLink("https://realsa.page.link/u9DC")) {
-            isLogged = true
-        }
-    }
-
     private fun setupView() {
         setupViewModel()
         getMyLocation()
@@ -69,11 +54,21 @@ class MenuActivity : BaseActivity() {
 
     private fun setupViewModel() {
         historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
+        historyViewModel.getEmail()
+        responseViewModel()
+    }
+
+    private fun responseViewModel() {
         historyViewModel.singleLiveEvent.observe(this, Observer {
             when(it) {
                 is HistoryViewModel.ViewEvent.ResponseHistories -> {
                     if(it.histories.isNotEmpty()) {
                         println(it.histories.toString())
+                    }
+                }
+                is HistoryViewModel.ViewEvent.ResponseEmail -> {
+                    if(it.email.isNotEmpty()) {
+                        isLogged = true
                     }
                 }
             }
@@ -107,9 +102,9 @@ class MenuActivity : BaseActivity() {
         }
         RxView.clicks(fabHistories).subscribe {
             if(isLogged) {
-                startActivity(Intent(this, HistoryActivity::class.java))
-            } else {
                 startActivity(Intent(this, TimelineActivity::class.java))
+            } else {
+                startActivity(Intent(this, HistoryActivity::class.java))
             }
         }
         RxView.clicks(imgIcon).subscribe {
@@ -165,7 +160,7 @@ class MenuActivity : BaseActivity() {
             latitude = mLatitude.toString()
             longitude = mLongitude.toString()
         }
-        sendEmail(result, getDate(), "$mLatitude, $mLongitude")
+        historyViewModel.insertHistoryFirebase(history)
         historyViewModel.insertHistory(history)
     }
 
@@ -173,34 +168,5 @@ class MenuActivity : BaseActivity() {
         val sdf = SimpleDateFormat(
             "yyyy/M/dd hh:mm", Locale.getDefault())
         return sdf.format(Date())
-    }
-
-    private fun sendEmail(description: String, date: String, location: String) {
-        setupDialogProgress()
-        GMailSender.withAccount("deimer2156@gmail.com", "Deimer2018*")
-            .withTitle("Reporte Asistencia $date")
-            .withBody("$description, coordenadas: $location")
-            .withSender("Sender")
-            .toEmailAddress("contacto@ideamosweb.com")
-            .withListenner(object: GmailListener{
-                override fun sendFail(err: String?) {
-                    Snackbar.make(fabCamera, err.toString(), Snackbar.LENGTH_LONG).show()
-                    dialog.dismiss()
-                }
-
-                override fun sendSuccess() {
-                    Snackbar.make(fabCamera, "Correo enviado!", Snackbar.LENGTH_LONG).show()
-                    dialog.dismiss()
-                }
-            }).send()
-    }
-
-    private fun setupDialogProgress() {
-        dialog = SpotsDialog.Builder()
-            .setContext(this)
-            .setMessage("Enviando correo...")
-            .setCancelable(false)
-            .build()
-            .apply { show() }
     }
 }

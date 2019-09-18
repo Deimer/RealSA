@@ -1,16 +1,31 @@
 package com.realsa.data.repositories.history
 
 import android.util.Log
+import com.google.firebase.database.FirebaseDatabase
 import com.realsa.data.entities.HistoryEntity
+import com.realsa.data.repositories.helper.PreferencesHelper
 import com.realsa.di.history.DaggerIHistoryComponent
 import com.realsa.di.history.HistoryModule
 import io.reactivex.Observable
 import io.realm.Realm
+import javax.inject.Inject
 
 class HistoryRepository: IHistoryRepository {
 
+    @Inject
+    lateinit var preferencesHelper: PreferencesHelper
+
     init {
         DaggerIHistoryComponent.builder().historyModule(HistoryModule()).build().inject(this)
+    }
+
+    override fun saveEmail(email: String): Observable<Boolean>? {
+        preferencesHelper.save("email", email)
+        return Observable.just(true)
+    }
+
+    override fun getEmail(keyName: String): Observable<String>? {
+        return Observable.just(preferencesHelper.getValueString(keyName))
     }
 
     private fun generateIdIncrement(): Int {
@@ -23,6 +38,11 @@ class HistoryRepository: IHistoryRepository {
             currentIdNum.toInt() + 1
         }
         return nextId
+    }
+
+    override fun insertFirebase(historyEntity: HistoryEntity): Observable<Boolean> {
+        val database = FirebaseDatabase.getInstance().reference
+        return Observable.just(database.child("histories").push().setValue(historyEntity).isSuccessful)
     }
 
     override fun insert(historyEntity: HistoryEntity): Observable<Boolean> {

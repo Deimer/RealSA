@@ -33,8 +33,13 @@ abstract class BaseActivity: AppCompatActivity() {
     fun EditText.getValue(): String = this.text.toString().trim()
 
     fun EditText.isValidEmail():
-            Boolean = this.text.toString().isNotEmpty() &&
-            Patterns.EMAIL_ADDRESS.matcher(this.text.toString()).matches()
+            Boolean = this.text.toString().isNotEmpty()
+            && Patterns.EMAIL_ADDRESS.matcher(this.text.toString()).matches()
+
+    fun EditText.isPermittedEmail():
+            Boolean = this.text.toString() == "dvilla@quqo.com"
+            || this.text.toString() == "segreal@segreal.com"
+            || this.text.toString() == "contacto@ideamosweb.com"
 
     fun EditText.isValidCellphone():
             Boolean = this.text.toString().isNotEmpty() &&

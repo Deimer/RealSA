@@ -1,6 +1,7 @@
 package com.realsa.di.history
 
 import com.realsa.data.interactors.HistoryInteractor
+import com.realsa.data.repositories.helper.PreferencesHelper
 import com.realsa.data.repositories.history.HistoryRepository
 import com.realsa.data.repositories.history.IHistoryRepository
 import dagger.Module
@@ -16,5 +17,9 @@ class HistoryModule {
     @Provides
     fun provideClientInteractor(): HistoryInteractor {
         return HistoryInteractor()
+    }
+    @Provides
+    fun providePreferenceHelper(): PreferencesHelper {
+        return PreferencesHelper()
     }
 }

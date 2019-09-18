@@ -17,21 +17,23 @@ class TimelineRepository: ITimelineRepository {
 
     override fun get(): Observable<MutableList<HistoryEntity?>>? {
         val histories = mutableListOf<HistoryEntity?>()
-        val databaseReference = FirebaseDatabase.getInstance().reference
-        val query = databaseReference.child("histories")
+        val database = FirebaseDatabase.getInstance().reference
+        val query = database.child("histories")
 
-        query.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onCancelled(snapshotError: DatabaseError) {
-                println("Error: ${snapshotError.message}")
-            }
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach {
-                    val history: HistoryEntity? = it.getValue(HistoryEntity::class.java)
-                    histories.add(history)
+        return Observable.create { emitter ->
+            query.addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onCancelled(snapshotError: DatabaseError) {
+                    println("Error: ${snapshotError.message}")
                 }
-            }
-        })
-
-        return Observable.just(histories)
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        val history: HistoryEntity? = it.getValue(HistoryEntity::class.java)
+                        histories.add(history)
+                    }
+                    emitter.onNext(histories)
+                    emitter.onComplete()
+                }
+            })
+        }
     }
 }
