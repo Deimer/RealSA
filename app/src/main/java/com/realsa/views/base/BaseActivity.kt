@@ -45,6 +45,10 @@ abstract class BaseActivity: AppCompatActivity() {
             Boolean = this.text.toString().isNotEmpty() &&
             this.text.toString().length == 10
 
+    fun String.validateNull(): String {
+        return if(this.isNullOrEmpty()) "0" else this
+    }
+
     fun showMessageBar(resource: Int) {
         showSnackBar(rString(resource))
     }

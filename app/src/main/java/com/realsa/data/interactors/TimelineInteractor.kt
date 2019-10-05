@@ -36,6 +36,7 @@ class TimelineInteractor {
                 description = it?.description
                 latitude = it?.latitude
                 longitude = it?.longitude
+                numberPhone = it?.numberPhone
             }
             models.add(model)
         }

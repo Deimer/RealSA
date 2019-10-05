@@ -4,7 +4,6 @@ import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import com.realsa.R
 import com.realsa.views.camera.CameraLectorActivity
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.content_menu.*
@@ -24,6 +23,9 @@ import com.realsa.views.timeline.TimelineActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.telephony.TelephonyManager
+import android.content.Context
+import com.realsa.R
 
 @SuppressLint("CheckResult")
 class MenuActivity : BaseActivity() {
@@ -34,6 +36,7 @@ class MenuActivity : BaseActivity() {
     private var mLatitude: Float = 0.toFloat()
     private var mLongitude: Float = 0.toFloat()
 
+    private val requestPermissionPhone = 8
     private val requestPermissionCamera = 9
     private val responseCamera = 10
 
@@ -95,9 +98,14 @@ class MenuActivity : BaseActivity() {
 
     private fun initClickListeners() {
         RxView.clicks(fabCamera).subscribe {
-            val havePermission = askForPermission(permission.CAMERA, requestPermissionCamera)
-            if(havePermission) {
-                startActivityForResult(Intent(this, CameraLectorActivity::class.java), responseCamera)
+            val havePermissionPhone = askForPermission(permission.READ_PHONE_STATE, requestPermissionPhone)
+            if(havePermissionPhone) {
+                val havePermission = askForPermission(permission.CAMERA, requestPermissionCamera)
+                if(havePermission) {
+                    startActivityForResult(Intent(this, CameraLectorActivity::class.java), responseCamera)
+                }
+            } else {
+                showMessageToast("Debes validar el permiso para la lectura de tú número celular.")
             }
         }
         RxView.clicks(fabHistories).subscribe {
@@ -159,9 +167,16 @@ class MenuActivity : BaseActivity() {
             createdAt = getDate()
             latitude = mLatitude.toString()
             longitude = mLongitude.toString()
+            numberPhone = getNumberPhone()
         }
         historyViewModel.insertHistoryFirebase(history)
         historyViewModel.insertHistory(history)
+    }
+
+    @SuppressLint("MissingPermission", "HardwareIds")
+    private fun getNumberPhone(): String? {
+        val tMgr = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        return tMgr.line1Number
     }
 
     private fun getDate(): String {

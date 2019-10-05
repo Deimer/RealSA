@@ -9,6 +9,8 @@
 
     <string name="lbl_option_histories">Mostrar Historial</string>
 
+    <string name="lbl_option_create_file">Crear Archivo</string>
+
     <string name="title_login">Login</string>
 
     <string name="hint_email">Ingresa tu correo electrónico</string>
