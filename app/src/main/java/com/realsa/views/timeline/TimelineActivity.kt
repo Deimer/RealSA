@@ -26,6 +26,8 @@ class TimelineActivity : BaseActivity() {
     private val permissionWrite: Int = 1
     private var dataList: MutableList<String> = mutableListOf()
 
+    private var canClick: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timeline)
@@ -43,6 +45,7 @@ class TimelineActivity : BaseActivity() {
         timelineViewModel.singleLiveEvent.observe(this, Observer {
             when(it) {
                 is TimelineViewModel.ViewEvent.ResponseHistories -> {
+                    canClick = true
                     setupRecyclerClients(it.histories)
                 }
                 is TimelineViewModel.ViewEvent.ResponseError -> {
@@ -74,8 +77,12 @@ class TimelineActivity : BaseActivity() {
 
     private fun initClickListeners() {
         fabCreateFile.setOnClickListener {
-            showLoading()
-            generateFile()
+            if(canClick) {
+                showLoading()
+                generateFile()
+            } else {
+                showMessageToast("Aún no han cargado los datos.")
+            }
         }
     }
 
@@ -103,7 +110,7 @@ class TimelineActivity : BaseActivity() {
         }
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/html"
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("dvilla@quqo.com"))
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("segreal@segreal.com"))
         intent.putExtra(Intent.EXTRA_SUBJECT, "Principal")
         intent.putExtra(Intent.EXTRA_BCC, arrayOf("contacto@ideamosweb.com"))
         intent.putExtra(Intent.EXTRA_TEXT, "Mi Reporte")
