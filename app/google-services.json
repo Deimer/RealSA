@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "321487409454",
-    "firebase_url": "https://realsa-41fa3.firebaseio.com",
-    "project_id": "realsa-41fa3",
-    "storage_bucket": "realsa-41fa3.appspot.com"
+    "project_number": "659013927802",
+    "firebase_url": "https://realsa-d073b.firebaseio.com",
+    "project_id": "realsa-d073b",
+    "storage_bucket": "realsa-d073b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:321487409454:android:ef928e209d07606ebbaabf",
+        "mobilesdk_app_id": "1:659013927802:android:62bc3839ee65d5ef1bccc3",
         "android_client_info": {
           "package_name": "com.realsa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "321487409454-c2fmnngbj7ohi2tlrti674gedtkvvujo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.realsa",
-            "certificate_hash": "51ccbb264399e3c7c235be9932e3ab1186a6ccb6"
-          }
-        },
-        {
-          "client_id": "321487409454-o3fohv40e06i6mc5cec79a6fiaret95t.apps.googleusercontent.com",
+          "client_id": "659013927802-c1tmbcgof2i1amdpl98t32pi0hdqdmf7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD_OjU6Pevbf2S_4OBTep0DUEAF6deQyY4"
+          "current_key": "AIzaSyDZjIavJBfj1x78pQbQu5knozaP_39PR0I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "321487409454-o3fohv40e06i6mc5cec79a6fiaret95t.apps.googleusercontent.com",
+              "client_id": "659013927802-c1tmbcgof2i1amdpl98t32pi0hdqdmf7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -39,7 +39,12 @@ abstract class BaseActivity: AppCompatActivity() {
     fun EditText.isPermittedEmail():
             Boolean = this.text.toString() == "dvilla@quqo.com"
             || this.text.toString() == "segreal@segreal.com"
+            || this.text.toString() == "cab@cableonda.net"
             || this.text.toString() == "contacto@ideamosweb.com"
+            || this.text.toString() == "marlon@ideamosweb.com"
+            || this.text.toString() == "cajcvbms@gmail.com"
+            || this.text.toString() == "oebatista@gmail.com"
+            || this.text.toString() == "yiyawilliams@gmail.com"
 
     fun EditText.isValidCellphone():
             Boolean = this.text.toString().isNotEmpty() &&

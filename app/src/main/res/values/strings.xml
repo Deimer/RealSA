@@ -17,5 +17,10 @@
 
     <string name="lbl_login">Iniciar sesión</string>
 
+    <string name="lbl_delete_history">¿Está seguro qué desea eliminar el historial?</string>
+
+    <string name="but_ok">Si</string>
+    <string name="but_not">No</string>
+
     <string name="error_email">Debe ingresar un correo electrónico con formato valido.</string>
 </resources>

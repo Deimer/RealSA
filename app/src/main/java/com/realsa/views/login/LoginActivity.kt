@@ -72,7 +72,7 @@ class LoginActivity : BaseActivity() {
 
     private fun createActionCodeSettings(): ActionCodeSettings {
         return ActionCodeSettings.newBuilder()
-            .setUrl("https://realsa.page.link/u9DC")
+            .setUrl("https://realsa2.page.link/4v3Q")
             .setHandleCodeInApp(true)
             .setAndroidPackageName(
                 "com.realsa",

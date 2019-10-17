@@ -1,6 +1,7 @@
 package com.realsa.views.timeline
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -15,8 +16,11 @@ import net.ozaydin.serkan.easy_csv.EasyCsv
 import net.ozaydin.serkan.easy_csv.FileCallback
 import java.io.File
 import android.content.Intent
+import android.view.LayoutInflater
 import androidx.core.content.FileProvider
 import com.realsa.BuildConfig
+import kotlinx.android.synthetic.main.content_toolbar.*
+import kotlinx.android.synthetic.main.dialog_base.view.*
 
 @SuppressLint("CheckResult")
 class TimelineActivity : BaseActivity() {
@@ -35,9 +39,17 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun setupView() {
+        setupToolbar()
         setupViewModel()
         initClickListeners()
         timelineViewModel.get()
+    }
+
+    private fun setupToolbar() {
+        butDelete.visibility = View.VISIBLE
+        butDelete.setOnClickListener {
+            showDialogDeleteHistory()
+        }
     }
 
     private fun setupViewModel() {
@@ -46,10 +58,15 @@ class TimelineActivity : BaseActivity() {
             when(it) {
                 is TimelineViewModel.ViewEvent.ResponseHistories -> {
                     canClick = true
-                    setupRecyclerClients(it.histories)
+                    setupRecyclerClients(it.histories.reversed())
                 }
                 is TimelineViewModel.ViewEvent.ResponseError -> {
                     showMessageBar(it.errorMessage)
+                }
+                is TimelineViewModel.ViewEvent.ResponseRemove -> {
+                    hideLoading()
+                    showMessageToast("Historial eliminado correctamente.")
+                    finish()
                 }
             }
         })
@@ -89,7 +106,7 @@ class TimelineActivity : BaseActivity() {
     private fun generateFile() {
         val easyCsv = EasyCsv(this)
         val headerList = mutableListOf<String>()
-        headerList.add("Fecha|Data|Celular|Latitud|Longitud¿")
+        headerList.add("Fecha|Data|IMEI|Latitud|Longitud¿")
         easyCsv.setSeparatorColumn("|")
         easyCsv.setSeperatorLine("¿")
         easyCsv.createCsvFile("Mi Reporte", headerList, dataList, permissionWrite, object: FileCallback {
@@ -116,5 +133,21 @@ class TimelineActivity : BaseActivity() {
         intent.putExtra(Intent.EXTRA_TEXT, "Mi Reporte")
         intent.putExtra(Intent.EXTRA_STREAM, attached)
         startActivity(intent)
+    }
+
+    @SuppressLint("InflateParams")
+    private fun showDialogDeleteHistory() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_base, null)
+        val builder = AlertDialog.Builder(this).setView(dialogView).setTitle("")
+        val alertDialog = builder.show()
+
+        dialogView.butNot.setOnClickListener {
+            alertDialog.dismiss()
+        }
+        dialogView.butOk.setOnClickListener {
+            alertDialog.dismiss()
+            showLoading()
+            timelineViewModel.remove()
+        }
     }
 }

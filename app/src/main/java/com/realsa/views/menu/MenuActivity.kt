@@ -25,6 +25,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import android.telephony.TelephonyManager
 import android.content.Context
+import android.os.Build
 import com.realsa.R
 
 @SuppressLint("CheckResult")
@@ -144,6 +145,9 @@ class MenuActivity : BaseActivity() {
             if(requestCode == requestPermissionCamera) {
                 startActivityForResult(Intent(this, CameraLectorActivity::class.java), responseCamera)
             }
+            if(requestCode == requestPermissionPhone) {
+                startActivityForResult(Intent(this, CameraLectorActivity::class.java), responseCamera)
+            }
         }
     }
 
@@ -175,8 +179,17 @@ class MenuActivity : BaseActivity() {
 
     @SuppressLint("MissingPermission", "HardwareIds")
     private fun getNumberPhone(): String? {
-        val tMgr = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return tMgr.line1Number
+        val havePermissionPhone = askForPermission(permission.READ_PHONE_STATE, requestPermissionPhone)
+        return if(havePermissionPhone) {
+            val tMgr = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                tMgr.imei
+            } else {
+                tMgr.deviceId
+            }
+        } else {
+            UUID.randomUUID().toString()
+        }
     }
 
     private fun getDate(): String {

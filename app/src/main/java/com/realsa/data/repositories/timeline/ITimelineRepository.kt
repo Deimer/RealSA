@@ -6,4 +6,6 @@ import io.reactivex.Observable
 interface ITimelineRepository {
 
     fun get(): Observable<MutableList<HistoryEntity?>>?
+
+    fun remove(): Observable<Boolean>?
 }

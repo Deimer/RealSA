@@ -23,6 +23,7 @@ class TimelineViewModel: ViewModel() {
 
     sealed class ViewEvent {
         class ResponseHistories(val histories: List<HistoryModel>): ViewEvent()
+        class ResponseRemove(val success: Boolean): ViewEvent()
         class ResponseError(val errorMessage: String): ViewEvent()
     }
 
@@ -33,6 +34,14 @@ class TimelineViewModel: ViewModel() {
             } else {
                 singleLiveEvent.value = ViewEvent.ResponseError("Lista vacía.")
             }
+        }, {
+            singleLiveEvent.value = ViewEvent.ResponseError(it.message.toString())
+        })
+    }
+
+    fun remove() {
+        timelineInteractor.remove()?.subscribe ({
+            singleLiveEvent.value = ViewEvent.ResponseRemove(it)
         }, {
             singleLiveEvent.value = ViewEvent.ResponseError(it.message.toString())
         })
