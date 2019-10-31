@@ -37,9 +37,9 @@ abstract class BaseActivity: AppCompatActivity() {
             && Patterns.EMAIL_ADDRESS.matcher(this.text.toString()).matches()
 
     fun EditText.isPermittedEmail():
-            Boolean = this.text.toString() == "dvilla@quqo.com"
-            || this.text.toString() == "segreal@segreal.com"
+            Boolean = this.text.toString() == "oebatista@gmail.com"
             || this.text.toString() == "contacto@ideamosweb.com"
+            || this.text.toString() == "malosava79@gmail.com"
 
     fun EditText.isValidCellphone():
             Boolean = this.text.toString().isNotEmpty() &&
