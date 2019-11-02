@@ -22,9 +22,6 @@ class TimelineRepository: ITimelineRepository {
 
         return Observable.create { emitter ->
             query.addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onCancelled(snapshotError: DatabaseError) {
-                    println("Error: ${snapshotError.message}")
-                }
                 override fun onDataChange(snapshot: DataSnapshot) {
                     snapshot.children.forEach {
                         val history: HistoryEntity? = it.getValue(HistoryEntity::class.java)
@@ -33,7 +30,16 @@ class TimelineRepository: ITimelineRepository {
                     emitter.onNext(histories)
                     emitter.onComplete()
                 }
+                override fun onCancelled(snapshotError: DatabaseError) {
+                    println("Error: ${snapshotError.message}")
+                }
             })
         }
+    }
+
+    override fun remove(): Observable<Boolean>? {
+        val database = FirebaseDatabase.getInstance().reference
+        val query = database.child("histories").removeValue().isSuccessful
+        return Observable.just(query)
     }
 }

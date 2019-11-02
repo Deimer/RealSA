@@ -37,13 +37,22 @@ abstract class BaseActivity: AppCompatActivity() {
             && Patterns.EMAIL_ADDRESS.matcher(this.text.toString()).matches()
 
     fun EditText.isPermittedEmail():
-            Boolean = this.text.toString() == "oebatista@gmail.com"
+            Boolean = this.text.toString() == "dvilla@quqo.com"
+            || this.text.toString() == "segreal@segreal.com"
+            || this.text.toString() == "cab@cableonda.net"
             || this.text.toString() == "contacto@ideamosweb.com"
-            || this.text.toString() == "malosava79@gmail.com"
+            || this.text.toString() == "marlon@ideamosweb.com"
+            || this.text.toString() == "cajcvbms@gmail.com"
+            || this.text.toString() == "oebatista@gmail.com"
+            || this.text.toString() == "yiyawilliams@gmail.com"
 
     fun EditText.isValidCellphone():
             Boolean = this.text.toString().isNotEmpty() &&
             this.text.toString().length == 10
+
+    fun String.validateNull(): String {
+        return if(this.isNullOrEmpty()) "0" else this
+    }
 
     fun showMessageBar(resource: Int) {
         showSnackBar(rString(resource))

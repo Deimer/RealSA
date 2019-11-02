@@ -78,6 +78,7 @@ dependencies {
     implementation 'com.github.tntkhang:gmail-sender-library:1.2.0'
     implementation 'com.agrawalsuneet.androidlibs:loaderspack:1.2.3'
     implementation("io.coil-kt:coil:0.7.0")
+    implementation 'com.github.hsmnzaydn:easy-csv:1.0.0'
     //Location
     implementation 'com.google.android.gms:play-services-base:17.1.0'
     implementation 'com.google.android.gms:play-services-vision:18.0.0'

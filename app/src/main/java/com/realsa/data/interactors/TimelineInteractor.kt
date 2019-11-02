@@ -28,6 +28,15 @@ class TimelineInteractor {
             }
     }
 
+    fun remove(): Observable<Boolean>? {
+        return timelineRepository.remove()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.flatMap { success ->
+                Observable.just(success)
+            }
+    }
+
     private fun convertHistoryEntityListToModels(entityList: MutableList<HistoryEntity?>): List<HistoryModel> {
         val models = mutableListOf<HistoryModel>()
         entityList.forEach {
@@ -36,6 +45,7 @@ class TimelineInteractor {
                 description = it?.description
                 latitude = it?.latitude
                 longitude = it?.longitude
+                numberPhone = it?.numberPhone
             }
             models.add(model)
         }

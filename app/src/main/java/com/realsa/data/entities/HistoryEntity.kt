@@ -11,4 +11,5 @@ open class HistoryEntity: RealmObject() {
     var description: String? = null
     var latitude: String? = ""
     var longitude: String? = ""
+    var numberPhone: String? = ""
 }

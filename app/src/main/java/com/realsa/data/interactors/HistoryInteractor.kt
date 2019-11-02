@@ -70,6 +70,7 @@ class HistoryInteractor {
             createdAt = entity.createdAt
             latitude = entity.latitude
             longitude = entity.longitude
+            numberPhone = entity.numberPhone
         }
     }
 
@@ -80,6 +81,7 @@ class HistoryInteractor {
             createdAt = entity.createdAt
             latitude = entity.latitude
             longitude = entity.longitude
+            numberPhone = entity.numberPhone
         }
     }
 }
