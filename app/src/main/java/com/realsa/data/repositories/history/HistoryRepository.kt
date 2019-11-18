@@ -42,6 +42,7 @@ class HistoryRepository: IHistoryRepository {
 
     override fun insertFirebase(historyEntity: HistoryEntity): Observable<Boolean> {
         val database = FirebaseDatabase.getInstance().reference
+        println("Reference: ${database.toString()}")
         return Observable.just(database.child("histories").push().setValue(historyEntity).isSuccessful)
     }
 
