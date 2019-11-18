@@ -194,7 +194,7 @@ class MenuActivity : BaseActivity() {
 
     private fun getDate(): String {
         val sdf = SimpleDateFormat(
-            "yyyy/M/dd hh:mm", Locale.getDefault())
+            "yyyy/M/dd kk:mm", Locale.getDefault())
         return sdf.format(Date())
     }
 }
